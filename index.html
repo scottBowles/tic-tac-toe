@@ -3,13 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
   <title>Document</title>
 </head>
 <body>
-  <div id="gameboard"></div>
+  <div id="gameboard">
+    <div class="game-space" id="top-left">x</div>
+    <div class="game-space" id="top-center">o</div>
+    <div class="game-space" id="top-right">x</div>
+    <div class="game-space" id="mid-left">o</div>
+    <div class="game-space" id="mid-center"></div>
+    <div class="game-space" id="mid-right"></div>
+    <div class="game-space" id="bottom-left"></div>
+    <div class="game-space" id="bottom-center"></div>
+    <div class="game-space" id="bottom-right"></div>
+  </div>
   <button id="newGameButton">New Game</button>
   <div id="playerOne">Player One</div>
   <div id="playerTwo">Player Two</div>
-  <div id="message"></div>
+  <div id="message">Message</div>
 </body>
 </html>
