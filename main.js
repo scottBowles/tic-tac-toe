@@ -1,64 +1,116 @@
+const playerFactor = (name, marker) => {
+  const getName = () => name
+  const changeName = newName => {
+    if (newName) {
+      name = newName
+      return name
+    } else {
+      return false
+    }
+  }
+  const getMarker = () => marker
+  const changeMarker = newMarker => {
+    if ( typeof newMarker === "string" && newMarker.length === 1) {
+      marker = newMarker;
+      return marker
+    } else {
+      return false
+    }
+  }
+  return { getName, changeName, getMarker, changeMarker }
+}
+
+const playerOne = playerFactor('Player One', 'X');
+const playerTwo = playerFactor('Player Two', 'O');
+
 const ui = (() => {
   const gameboard = document.querySelector("#gameboard");
   const newGameButton = document.querySelector("#newGameButton");
-  const playerOne = document.querySelector("#playerOne");
-  const playerOneInput = document.querySelector("#playerOneInput")
-  const playerTwo = document.querySelector("#playerTwo");
-  const playerTwoInput = document.querySelector("#playerTwoInput")
+  const playerOneName = document.querySelector("#playerOneName");
+  const playerOneNameInput = document.querySelector("#playerOneNameInput")
+  const playerOneMarker = document.querySelector("#playerOneMarker")
+  const playerOneMarkerInput = document.querySelector("#playerOneMarkerInput")
+  const playerTwoName = document.querySelector("#playerTwoName");
+  const playerTwoNameInput = document.querySelector("#playerTwoNameInput")
+  const playerTwoMarker = document.querySelector("#playerTwoMarker")
+  const playerTwoMarkerInput = document.querySelector("#playerTwoMarkerInput")
   const message = document.querySelector("#message");
 
   /*
    *   NAME DISPLAYS & INPUTS
    */
   
+  // Display elements are paired with input elements, one showing at a time.
+  function getPairElement(element) {
+    const pairElementId = 
+      element.id.match(/Input$/)
+      ? element.id.slice(0, -5)
+      : element.id + "Input";
+    return document.querySelector(`#${pairElementId}`);
+  }
+  
   function toggleInputDisplay(element) {
-    if (element.classList.contains("playerOneDisplay")) {
-      playerOne.classList.toggle("hidden")
-      playerOneInput.classList.toggle("hidden")
-    } 
-    else if (element.classList.contains("playerTwoDisplay")) {
-      playerTwo.classList.toggle("hidden")
-      playerTwoInput.classList.toggle("hidden")
-    }
+    const pairElement = getPairElement(element);
+    element.classList.toggle("hidden");
+    pairElement.classList.toggle("hidden");
   }
 
-  playerOne.onclick = function () {
-    toggleInputDisplay(playerOne)
-    playerOneInput.focus()
-  }
+  const displays = [playerOneName, playerOneMarker, playerTwoName, playerTwoMarker];
+  
+  displays.forEach(display => {
+    display.addEventListener("click", () => {
+      toggleInputDisplay(display)
+      const matchingInput = getPairElement(display)
+      matchingInput.focus()
+    })
+  })
+  
+  const inputs = [playerOneNameInput, playerOneMarkerInput, playerTwoNameInput, playerTwoMarkerInput]
+  
+  inputs.forEach(input => {
+    input.addEventListener("blur", () => {
+      const player = 
+        input.classList.contains("playerOne")
+        ? playerOne
+        : playerTwo;
+      if (input.classList.contains("nameInput")) {
+        const newName = input.value || player.getName()
+        const isValid = player.changeName(newName);
+        if (isValid) {
+          getPairElement(input).innerText = newName;
+        } else {
+          message.innerText = "Invalid Name"
+        }  
+      } else if (input.classList.contains("markerInput")) {
+        const newMarker = input.value;
+        const isValid = player.changeMarker(newMarker);
+        if (isValid) {
+          getPairElement(input).innerText = newMarker;
+        } else {
+          message.innerText = "Marker must be exactly one character long"
+        }
 
-  playerOneInput.onblur = function() {
-    const newName = this.value || 'Player One';
-    playerOne.innerText = newName
-    toggleInputDisplay(playerOneInput)
-    // player one .changeName(newName)
-  }
-
-  playerOneInput.addEventListener('keydown', e => {
-    // Blur to trigger onblur event -- avoids event doubling
-    if (e.key === "Enter") playerOneInput.blur()
+      }
+      
+      toggleInputDisplay(input);
+    })
+    input.addEventListener("keydown", e => {
+      // Trigger blur event -- avoids event doubling
+      if (e.key === "Enter") input.blur()
+    })
   })
 
-  playerTwo.onclick = function () {
-    toggleInputDisplay(playerTwo)
-    playerTwoInput.focus()
-  }
 
-  playerTwoInput.onblur = function() {
-    const newName = this.value || 'Player Two';
-    playerTwo.innerText = newName
-    toggleInputDisplay(playerTwoInput)
-    // player two .changeName(newName)
-  }
-
-  playerTwoInput.addEventListener('keydown', e => {
-    // Blur to trigger onblur event -- avoids event doubling
-    if (e.key === "Enter") playerTwoInput.blur()
-  })
 
   /*
    *   NEW GAME
    */
+
+  // ui.clearBoard
+  // gameboard.clearBoard
+  // prompt for who plays 'X'
+  //   set gameplay.turn
+  //   ui.displayPlayerMarkers
 
   // newGameButton.onclick(gameplay.newGame)
   // newGameButton.addEventListener('keydown', e => {
