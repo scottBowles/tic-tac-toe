@@ -1,4 +1,6 @@
-const playerFactor = (name, marker) => {
+const playerFactory = (name, marker, id) => {
+  if (!id) throw 'Player id cannot be falsy'
+
   const getName = () => name
   const changeName = newName => {
     if (newName) {
@@ -17,23 +19,26 @@ const playerFactor = (name, marker) => {
       return false
     }
   }
-  return { getName, changeName, getMarker, changeMarker }
+  const getId = () => id
+  return { getName, changeName, getMarker, changeMarker, getId }
 }
 
-const playerOne = playerFactor('Player One', 'X');
-const playerTwo = playerFactor('Player Two', 'O');
+const playerOne = playerFactory('Player One', 'X', 1);
+const playerTwo = playerFactory('Player Two', 'O', 2);
+
 
 const ui = (() => {
-  const gameboard = document.querySelector("#gameboard");
+
+  const boardDisplay = document.querySelector("#board");
   const newGameButton = document.querySelector("#newGameButton");
   const playerOneName = document.querySelector("#playerOneName");
-  const playerOneNameInput = document.querySelector("#playerOneNameInput")
-  const playerOneMarker = document.querySelector("#playerOneMarker")
-  const playerOneMarkerInput = document.querySelector("#playerOneMarkerInput")
+  const playerOneNameInput = document.querySelector("#playerOneNameInput");
+  const playerOneMarker = document.querySelector("#playerOneMarker");
+  const playerOneMarkerInput = document.querySelector("#playerOneMarkerInput");
   const playerTwoName = document.querySelector("#playerTwoName");
-  const playerTwoNameInput = document.querySelector("#playerTwoNameInput")
-  const playerTwoMarker = document.querySelector("#playerTwoMarker")
-  const playerTwoMarkerInput = document.querySelector("#playerTwoMarkerInput")
+  const playerTwoNameInput = document.querySelector("#playerTwoNameInput");
+  const playerTwoMarker = document.querySelector("#playerTwoMarker");
+  const playerTwoMarkerInput = document.querySelector("#playerTwoMarkerInput");
   const message = document.querySelector("#message");
 
   /*
@@ -41,6 +46,7 @@ const ui = (() => {
    */
   
   // Display elements are paired with input elements, one showing at a time.
+
   function getPairElement(element) {
     const pairElementId = 
       element.id.match(/Input$/)
@@ -117,13 +123,38 @@ const ui = (() => {
   //   if (e.key === "Enter") gameplay.newGame()
   // })
 
+
   /*
    *   GAMEBOARD SPACE CLICK
    */
+  
+  function boardDisplayListener(e) {
+    const { spaceAlreadyPlayed, newPlay, checkForWinner, checkForTie } = gameboard;
+    const player = gameplay.whoseTurn();
+    const playerId = player.getId();
+    const marker = player.getMarker();
+    const row = e.target.dataset.row;
+    const column = e.target.dataset.column;
 
-  // gameboard.onclick = (e) => {
-  //   do something with e.target , e.target.innerText
-  // }
+    if (!spaceAlreadyPlayed(row, column)) {
+
+      newPlay(playerId, row, column);
+      e.target.innerText = marker;
+
+      if (checkForWinner(row, column)) {
+        boardDisplay.removeEventListener('click', boardDisplayListener)
+        message.innerText = `Congratulations! ${player.getName()} wins!`
+      } else if (checkForTie()) {
+        message.innerText = "It's a tie! Play again?"
+      } else {
+        gameplay.nextTurn();
+        // ui.nextTurn();
+      }
+
+    }
+  }
+  
+  boardDisplay.addEventListener('click', boardDisplayListener)
 
 })();
 
@@ -132,25 +163,48 @@ const ui = (() => {
 
 const gameboard = (() => {
 
-  const currentState = [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined];
+  const board = [
+    [0, 0, 0], 
+    [0, 0, 0], 
+    [0, 0, 0],
+  ];
 
-  function newPlay(mark, place) {
-    currentState[place] = mark;
+  function spaceAlreadyPlayed(row, column) {
+    return board[row][column];
+  };
+
+  function newPlay(playerId, row, column) {
+    board[row][column] = playerId;
   };
 
   function clearBoard() {
-    currentState = [undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined];
+    board = [
+      [0, 0, 0], 
+      [0, 0, 0], 
+      [0, 0, 0],
+    ];
   };
-  
-  function checkForWinner() {
 
+  function checkForWinner(rowNumber, columnNumber) {
+    const column = board.map(row => row[columnNumber]);
+    const row = board[rowNumber];
+    const ltrDiagonal = [board[0][0], board[1][1], board[2][2]];
+    const rtlDiagonal = [board[0][2], board[1][1], board[2][0]];
+    // checkLine will return false if not three in a row and 0 if none of the spaces have been played -- both falsy
+    const checkLine = (line) => line.reduce((acc, item) => acc === item ? item : false)
+    const isAWinner = checkLine(column) || checkLine(row) || checkLine(ltrDiagonal) || checkLine(rtlDiagonal);
+    return isAWinner
   };
   
   function checkForTie() {
-
+    const anyZeroes = 
+      board.reduce((acc, row) => [...acc, ...row], [])
+           .reduce((acc, value) => !value || acc, false);
+    return !anyZeroes;
   };
   
   return {
+    spaceAlreadyPlayed,
     newPlay,
     clearBoard,
     checkForWinner,
@@ -161,11 +215,11 @@ const gameboard = (() => {
 
 const gameplay = (() => {
 
-  const turn = 'x';
+  let turn = playerOne;
 
-  function nextTurn() { turn === 'x' ? turn = 'o' : turn = 'x' };
+  function whoseTurn() { return turn };
 
-  function checkEndConditions() { return checkForWinner() || checkForTie() }
+  function nextTurn() { turn = turn === playerOne ? playerTwo : playerOne };
 
   function newGame() {
     gameboard.clearBoard();
@@ -174,8 +228,8 @@ const gameplay = (() => {
   }
 
   return {
+    whoseTurn,
     nextTurn,
-    checkEndConditions,
     newGame,
   };
 

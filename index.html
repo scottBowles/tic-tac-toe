@@ -7,16 +7,16 @@
   <title>Document</title>
 </head>
 <body>
-  <div id="gameboard">
-    <div class="game-space" id="top-left">x</div>
-    <div class="game-space" id="top-center">o</div>
-    <div class="game-space" id="top-right">x</div>
-    <div class="game-space" id="mid-left">o</div>
-    <div class="game-space" id="mid-center"></div>
-    <div class="game-space" id="mid-right"></div>
-    <div class="game-space" id="bottom-left"></div>
-    <div class="game-space" id="bottom-center"></div>
-    <div class="game-space" id="bottom-right"></div>
+  <div id="board">
+    <div class="game-space" data-row="0" data-column="0" id="top-left"></div>
+    <div class="game-space" data-row="0" data-column="1" id="top-center"></div>
+    <div class="game-space" data-row="0" data-column="2" id="top-right"></div>
+    <div class="game-space" data-row="1" data-column="0" id="mid-left"></div>
+    <div class="game-space" data-row="1" data-column="1" id="mid-center"></div>
+    <div class="game-space" data-row="1" data-column="2" id="mid-right"></div>
+    <div class="game-space" data-row="2" data-column="0" id="bottom-left"></div>
+    <div class="game-space" data-row="2" data-column="1" id="bottom-center"></div>
+    <div class="game-space" data-row="2" data-column="2" id="bottom-right"></div>
   </div>
   <button id="newGameButton">New Game</button>
   <div id="playerOneName" class="playerOne">Player One</div>
