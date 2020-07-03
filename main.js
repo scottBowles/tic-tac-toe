@@ -139,6 +139,10 @@ const ui = (() => {
   const playerTwoMarkerInput = document.querySelector("#playerTwoMarkerInput");
   const message = document.querySelector("#message");
 
+  window.addEventListener("mousedown", () => {
+    message.innerText = " ";
+  });
+
   /*
    *   NAME & MARKER DISPLAYS & INPUTS
    */
