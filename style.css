@@ -1,9 +1,46 @@
 /* * {
-  border: 1px red solid
+  border: 1px red solid;
 } */
+
+* {
+  box-sizing: border-box;
+}
 
 .hidden {
   display: none;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.fade-out {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 2s, opacity 2s linear;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+}
+
+#container {
+  width: 500px;
+  text-align: center;
+}
+
+#message-container {
+  height: 50px;
+}
+
+#bottom-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+#bottom-container > * {
+  text-align: center;
 }
 
 #board {
@@ -46,7 +83,6 @@
 
 #mid-center {
   border: 1px solid black;
-
 }
 
 #mid-right {

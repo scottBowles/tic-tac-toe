@@ -1,41 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <title>Document</title>
-</head>
-<body>
-  <div id="board">
-    <div class="game-space" data-row="0" data-column="0" id="top-left"></div>
-    <div class="game-space" data-row="0" data-column="1" id="top-center"></div>
-    <div class="game-space" data-row="0" data-column="2" id="top-right"></div>
-    <div class="game-space" data-row="1" data-column="0" id="mid-left"></div>
-    <div class="game-space" data-row="1" data-column="1" id="mid-center"></div>
-    <div class="game-space" data-row="1" data-column="2" id="mid-right"></div>
-    <div class="game-space" data-row="2" data-column="0" id="bottom-left"></div>
-    <div class="game-space" data-row="2" data-column="1" id="bottom-center"></div>
-    <div class="game-space" data-row="2" data-column="2" id="bottom-right"></div>
-  </div>
-  <button id="newGameButton">New Game</button>
-  <div id="playerOneName" class="playerOne">Player One</div>
-  <div>
-    <input id="playerOneNameInput" class="hidden playerOne nameInput">
-  </div>
-  <div id="playerOneMarker" class="playerOne">X</div>
-  <div>
-    <input id="playerOneMarkerInput" class="hidden playerOne markerInput">
-  </div>
-  <div id="playerTwoName" class="playerTwo">Player Two</div>
-  <div>
-    <input id="playerTwoNameInput" class="hidden playerTwo nameInput">
-  </div>
-  <div id="playerTwoMarker" class="playerTwo">O</div>
-  <div>
-    <input id="playerTwoMarkerInput" class="hidden playerTwo markerInput">
-  </div>
-  <div id="message">Message</div>
-  <script src="main.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="container">
+      <p id="message"></p>
+      <div id="board">
+        <div
+          class="game-space"
+          data-row="0"
+          data-column="0"
+          id="top-left"
+        ></div>
+        <div
+          class="game-space"
+          data-row="0"
+          data-column="1"
+          id="top-center"
+        ></div>
+        <div
+          class="game-space"
+          data-row="0"
+          data-column="2"
+          id="top-right"
+        ></div>
+        <div
+          class="game-space"
+          data-row="1"
+          data-column="0"
+          id="mid-left"
+        ></div>
+        <div
+          class="game-space"
+          data-row="1"
+          data-column="1"
+          id="mid-center"
+        ></div>
+        <div
+          class="game-space"
+          data-row="1"
+          data-column="2"
+          id="mid-right"
+        ></div>
+        <div
+          class="game-space"
+          data-row="2"
+          data-column="0"
+          id="bottom-left"
+        ></div>
+        <div
+          class="game-space"
+          data-row="2"
+          data-column="1"
+          id="bottom-center"
+        ></div>
+        <div
+          class="game-space"
+          data-row="2"
+          data-column="2"
+          id="bottom-right"
+        ></div>
+      </div>
+      <div id="bottom-container">
+        <div>
+          <div id="playerOneName" class="playerOne">Player One</div>
+          <div>
+            <input id="playerOneNameInput" class="hidden playerOne nameInput" />
+          </div>
+          <div id="playerOneMarker" class="playerOne">X</div>
+          <div>
+            <input
+              id="playerOneMarkerInput"
+              class="hidden playerOne markerInput"
+            />
+          </div>
+        </div>
+        <div>
+          <div id="playerTwoName" class="playerTwo">Player Two</div>
+          <div>
+            <input id="playerTwoNameInput" class="hidden playerTwo nameInput" />
+          </div>
+          <div id="playerTwoMarker" class="playerTwo">O</div>
+          <div>
+            <input
+              id="playerTwoMarkerInput"
+              class="hidden playerTwo markerInput"
+            />
+          </div>
+        </div>
+      </div>
+      <button id="newGameButton">New Game</button>
+    </div>
+    <script src="main.js"></script>
+  </body>
 </html>
